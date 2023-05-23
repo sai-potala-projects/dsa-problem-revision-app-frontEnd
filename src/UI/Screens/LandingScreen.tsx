@@ -35,6 +35,11 @@ const LandingPage = () => {
     userDetails: { userInfo },
   } = useSelector((state: any) => state);
   const { loading, error, problemData } = problemServiceData;
+  let userDetails: any = {};
+
+  if (userInfo) {
+    userDetails = JSON.parse(userInfo);
+  }
 
   const dispatch = useDispatch();
 
@@ -72,7 +77,7 @@ const LandingPage = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Hi User,
+            Hi {userDetails?.userName || ''},
           </Typography>
         </Toolbar>
       </AppBar>
