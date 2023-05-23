@@ -37,7 +37,6 @@ const LandingPage = () => {
   const { loading, error, problemData } = problemServiceData;
 
   const dispatch = useDispatch();
-
   useEffect(() => {
     if (!userInfo || error === 'Invalid Token') {
       Cookies.remove('userInfo');
