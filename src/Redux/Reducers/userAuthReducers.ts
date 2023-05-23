@@ -5,7 +5,7 @@ export const userAuthReducer = (state = {}, action: any) => {
     case Auth_REQUEST:
       return { loading: true };
     case Auth_SUCCESS:
-      return { loading: false, userInfo: action.payload };
+      return { loading: false, userInfo: action.payload.data };
     case Auth_FAIL:
       return { loading: false, error: action.payload };
     case Auth_Reset:
