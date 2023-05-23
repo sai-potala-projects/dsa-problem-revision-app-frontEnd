@@ -36,6 +36,7 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { useDispatch, useSelector } from 'react-redux';
 import { problemServiceCall, problemServiceCallMessageReset } from '../../../Redux/Actions/problemActions';
+import { convertTableData } from '../../util';
 
 const columns = [
   { id: 'problemTitle', label: 'Problem Title' },
@@ -147,8 +148,9 @@ const ProblemTable = ({ tableData, tableDifficultyLevel }: ProblemTableProps) =>
         return problem;
       }
     });
+    const convertedData = convertTableData({ data: savedData });
     setSaveConfirmationOpen(false);
-    dispatch(problemServiceCall({ requestBody: { problems: savedData }, url: '/problems/add' }) as any);
+    dispatch(problemServiceCall({ requestBody: { problems: convertedData }, url: '/problems/add' }) as any);
   };
 
   const handleCancel = () => {
@@ -353,7 +355,7 @@ const ProblemTable = ({ tableData, tableDifficultyLevel }: ProblemTableProps) =>
             >
               <Box sx={{ flex: 1 }}>
                 <TextField
-                  label="Problem Title"
+                  label="Prob Title Min 6 char"
                   variant="outlined"
                   size="small"
                   required // Add required prop
