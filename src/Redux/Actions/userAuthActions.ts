@@ -15,7 +15,7 @@ export const userAuth = (siginInDetails: UserAuth) => async (dispatch: any) => {
   });
 
   try {
-    const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_LOCAL_BASE_URL}/users/signin`, siginInDetails);
+    const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/users/signin`, siginInDetails);
     Cookie.set('userInfo', JSON.stringify(data));
     dispatch({ type: Auth_SUCCESS, payload: { data } });
   } catch (error: any) {

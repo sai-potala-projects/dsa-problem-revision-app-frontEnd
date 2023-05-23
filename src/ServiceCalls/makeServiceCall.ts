@@ -11,7 +11,7 @@ const makeServiceCall = (url: string, requestBody: string = '') => {
     return Promise.reject('Unauthorized');
   }
   const axiosInstance: AxiosInstance = axios.create({
-    baseURL: process.env.REACT_APP_BACKEND_LOCAL_BASE_URL, // Use an environment variable or your dynamic base URL
+    baseURL: process.env.REACT_APP_BACKEND_BASE_URL, // Use an environment variable or your dynamic base URL
   });
 
   axiosInstance.interceptors.request.use((config: any) => {
