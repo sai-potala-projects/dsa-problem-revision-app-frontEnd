@@ -105,9 +105,6 @@ const LandingPage = () => {
               <>
                 {activeTab === 0 && (
                   <Box sx={{ display: 'flex', flexDirection: 'column', marginBottom: '20px' }}>
-                    <Typography variant="h6" component="div" sx={{ marginBottom: '10px', color: '#ED2B2A' }}>
-                      Easy Level Problems
-                    </Typography>
                     <ProblemTable
                       tableData={problemData.filter((problem: any) => problem.difficultyLevel === 'Easy')}
                       tableDifficultyLevel="Easy"
@@ -116,9 +113,6 @@ const LandingPage = () => {
                 )}
                 {activeTab === 1 && (
                   <Box sx={{ display: 'flex', flexDirection: 'column', marginBottom: '20px' }}>
-                    <Typography variant="h6" component="div" sx={{ marginBottom: '10px', color: '#F15A59' }}>
-                      Medium Level Problems
-                    </Typography>
                     <ProblemTable
                       tableData={problemData.filter((problem: any) => problem.difficultyLevel === 'Medium')}
                       tableDifficultyLevel="Medium"
@@ -127,9 +121,6 @@ const LandingPage = () => {
                 )}
                 {activeTab === 2 && (
                   <Box sx={{ display: 'flex', flexDirection: 'column', marginBottom: '20px' }}>
-                    <Typography variant="h6" component="div" sx={{ marginBottom: '10px', color: '#F15A59' }}>
-                      Difficult Level Problems
-                    </Typography>
                     <ProblemTable
                       tableData={problemData.filter((problem: any) => problem.difficultyLevel === 'Hard')}
                       tableDifficultyLevel="Hard"
