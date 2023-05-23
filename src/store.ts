@@ -6,7 +6,7 @@ import { getProblemListReducer } from './Redux/Reducers/problemLIstReducers';
 
 const cookieUserInfo = Cookie.get('userInfo') || '';
 
-const userInfo = !!cookieUserInfo ? cookieUserInfo : null;
+const userInfo = !!cookieUserInfo ? JSON.parse(cookieUserInfo) : null;
 
 export const problemServiceDataInitialState = { problemData: [], loading: false, error: '' };
 
