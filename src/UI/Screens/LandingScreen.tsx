@@ -111,6 +111,7 @@ const LandingPage = () => {
                     </Typography>
                     <ProblemTable
                       tableData={problemData.filter((problem: any) => problem.difficultyLevel === 'Easy')}
+                      tableDifficultyLevel="Easy"
                     />
                   </Box>
                 )}
@@ -121,6 +122,7 @@ const LandingPage = () => {
                     </Typography>
                     <ProblemTable
                       tableData={problemData.filter((problem: any) => problem.difficultyLevel === 'Medium')}
+                      tableDifficultyLevel="Medium"
                     />
                   </Box>
                 )}
@@ -131,6 +133,7 @@ const LandingPage = () => {
                     </Typography>
                     <ProblemTable
                       tableData={problemData.filter((problem: any) => problem.difficultyLevel === 'Hard')}
+                      tableDifficultyLevel="Hard"
                     />
                   </Box>
                 )}

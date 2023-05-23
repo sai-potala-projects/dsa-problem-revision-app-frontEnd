@@ -22,6 +22,10 @@ import {
   Snackbar,
   CircularProgress,
   ClickAwayListener,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -54,16 +58,16 @@ interface NewRow {
 
 interface ProblemTableProps {
   tableData: any;
+  tableDifficultyLevel: string;
 }
-
-const initialNewRow: NewRow = {};
 
 const StyledTableCell = (props: JSX.IntrinsicAttributes & TableCellProps) => (
   <TableCell sx={{ padding: '8px' }} {...props} />
 );
 
-const ProblemTable = ({ tableData }: ProblemTableProps) => {
+const ProblemTable = ({ tableData, tableDifficultyLevel }: ProblemTableProps) => {
   const ROWS_PER_PAGE = 5;
+  const initialNewRow: NewRow = { difficultyLevel: tableDifficultyLevel };
   const dispatch = useDispatch();
 
   const problemListData = useSelector((state: any) => state.problemServiceData);
@@ -81,6 +85,14 @@ const ProblemTable = ({ tableData }: ProblemTableProps) => {
   const totalPages = Math.ceil(totalRows / ROWS_PER_PAGE);
   const startRow = page * ROWS_PER_PAGE;
   const endRow = startRow + ROWS_PER_PAGE;
+
+  useEffect(() => {
+    if (!saveError) {
+      setPage(0); // Reset the page to 0 whenever tableData prop changes
+      setSelectedRows([]);
+      setData(tableData);
+    }
+  }, [tableData]);
 
   const handleRowClick = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const { checked } = event.target;
@@ -223,13 +235,54 @@ const ProblemTable = ({ tableData }: ProblemTableProps) => {
                       {columns.map((column: any) => (
                         <StyledTableCell key={column.id}>
                           {selectedRows.includes(startRow + index) ? (
-                            <TextField
-                              value={row[column.id]}
-                              onChange={(event) => handleInputChange(event, startRow + index, column.id)}
-                              onClick={handleTextFieldClick}
-                              variant="outlined"
-                              size="small"
-                            />
+                            column.id === 'difficultyLevel' ? (
+                              <FormControl fullWidth>
+                                <InputLabel id="demo-simple-select-label" size="small">
+                                  Difficulty Level
+                                </InputLabel>
+                                <Select
+                                  labelId="demo-simple-select-label"
+                                  id="demo-simple-select"
+                                  value={row[column.id]}
+                                  label="Difficulty Level"
+                                  onChange={(event) => handleInputChange(event, startRow + index, column.id)}
+                                  onClick={handleTextFieldClick}
+                                >
+                                  <MenuItem value={'Easy'}>Easy</MenuItem>
+                                  <MenuItem value={'Medium'}>Medium</MenuItem>
+                                  <MenuItem value={'Hard'}>Hard</MenuItem>
+                                </Select>
+                              </FormControl>
+                            ) : column.id === 'isCompleted' ? (
+                              <FormControl fullWidth>
+                                <InputLabel id="mark as completed" size="small">
+                                  Mark as completed
+                                </InputLabel>
+                                <Select
+                                  labelId="mark as completed"
+                                  id="mark as completed"
+                                  value={row[column.id]}
+                                  label="Mark as completed"
+                                  onChange={(event) => handleInputChange(event, startRow + index, column.id)}
+                                  onClick={handleTextFieldClick}
+                                >
+                                  <MenuItem value={'true'}>true</MenuItem>
+                                  <MenuItem value={'false'}>false</MenuItem>
+                                </Select>
+                              </FormControl>
+                            ) : (
+                              <TextField
+                                value={row[column.id]}
+                                onChange={(event) => handleInputChange(event, startRow + index, column.id)}
+                                onClick={handleTextFieldClick}
+                                variant="outlined"
+                                size="small"
+                              />
+                            )
+                          ) : column.id === 'url' ? (
+                            <a href={row[column.id]} target="_blank" rel="noopener noreferrer">
+                              {row[column.id]}
+                            </a>
                           ) : (
                             row[column.id]
                           )}
@@ -319,22 +372,60 @@ const ProblemTable = ({ tableData }: ProblemTableProps) => {
                 />
               </Box>
               <Box sx={{ flex: 1 }}>
-                <TextField
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label" size="small">
+                    Difficulty Level
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={newRow['difficultyLevel'] || ''}
+                    label="Difficulty Level"
+                    onChange={(event) => {
+                      console.log('event.target.value :', event.target.value);
+                      setNewRow({ ...newRow, difficultyLevel: event.target.value });
+                    }}
+                  >
+                    <MenuItem value={'Easy'}>Easy</MenuItem>
+                    <MenuItem value={'Medium'}>Medium</MenuItem>
+                    <MenuItem value={'Hard'}>Hard</MenuItem>
+                  </Select>
+                </FormControl>
+                {/* <TextField
                   label="Difficulty Level"
                   variant="outlined"
+                  label="Difficulty Level"
                   size="small"
                   value={newRow['difficultyLevel'] || ''}
                   onChange={(event) => setNewRow({ ...newRow, difficultyLevel: event.target.value })}
-                />
+                /> */}
               </Box>
               <Box sx={{ flex: 1 }}>
-                <TextField
+                <FormControl fullWidth>
+                  <InputLabel id="mark as completed" size="small">
+                    mark as completed
+                  </InputLabel>
+                  <Select
+                    labelId="mark as completed"
+                    id="mark as completed"
+                    value={newRow['isCompleted'] || ''}
+                    label="Mark as completed"
+                    onChange={(event) => {
+                      console.log('event.target.value :', event.target.value);
+                      setNewRow({ ...newRow, isCompleted: event.target.value });
+                    }}
+                  >
+                    <MenuItem value={'true'}>true</MenuItem>
+                    <MenuItem value={'false'}>false</MenuItem>
+                  </Select>
+                </FormControl>
+                {/* <TextField
                   label="mark as completed"
                   variant="outlined"
                   size="small"
                   value={newRow['isCompleted'] || ''}
                   onChange={(event) => setNewRow({ ...newRow, isCompleted: event.target.value })}
-                />
+                /> */}
               </Box>
               <Box sx={{ flex: 1 }}>
                 <TextField
@@ -355,7 +446,14 @@ const ProblemTable = ({ tableData }: ProblemTableProps) => {
                 />
               </Box>
               <Box sx={{ marginLeft: '10px' }}>
-                <Button variant="contained" color="primary" size="small" startIcon={<AddIcon />} onClick={handleAddRow}>
+                <Button
+                  variant="contained"
+                  disabled={!Boolean(newRow['problemTitle'])}
+                  color="primary"
+                  size="small"
+                  startIcon={<AddIcon />}
+                  onClick={handleAddRow}
+                >
                   Add
                 </Button>
               </Box>

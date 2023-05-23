@@ -1,4 +1,5 @@
 import makeServiceCall from '../../ServiceCalls/makeServiceCall';
+import { modifyTableData } from '../../UI/util';
 import {
   Get_PROBLEM_FAIL,
   Get_PROBLEM_REQUEST,
@@ -8,7 +9,6 @@ import {
   Save_PROBLEM_SUCCESS,
   Reset_PROBLEM_Service_Message,
 } from '../Constants/problemConstants';
-import { Auth_FAIL } from '../Constants/signInConstants';
 
 export const problemServiceCall =
   ({ requestBody, url, isGetServiceCall }: any) =>
@@ -21,10 +21,11 @@ export const problemServiceCall =
 
     try {
       const { data } = await makeServiceCall(url, requestBody);
+      const modifiedData = modifyTableData({ data: data.problems });
       if (isGetServiceCall) {
-        dispatch({ type: Get_PROBLEM_SUCCESS, payload: { problemList: data.problems || [] } });
+        dispatch({ type: Get_PROBLEM_SUCCESS, payload: { problemList: modifiedData || [] } });
       } else {
-        dispatch({ type: Save_PROBLEM_SUCCESS, payload: { problemList: data.problems || [] } });
+        dispatch({ type: Save_PROBLEM_SUCCESS, payload: { problemList: modifiedData || [] } });
       }
     } catch (error: any) {
       if (error.response && error.response.data?.message === 'Invalid Token') {
