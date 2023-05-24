@@ -45,6 +45,7 @@ const columns = [
   { id: 'isCompleted', label: 'mark as completed' },
   { id: 'timesSolved', label: 'no of times solved' },
   { id: 'url', label: 'problem url' },
+  { id: 'isImportant', label: ' is Important' },
 ];
 
 interface NewRow {
@@ -54,6 +55,7 @@ interface NewRow {
   notes?: string;
   isCompleted?: string;
   timesSolved?: string;
+  isImportant?: string;
   url?: string;
 }
 
@@ -286,7 +288,7 @@ const ProblemTable = ({ tableData, tableDifficultyLevel }: ProblemTableProps) =>
                               {row[column.id]}
                             </a>
                           ) : (
-                            row[column.id]
+                            row[column.id] || ''
                           )}
                         </StyledTableCell>
                       ))}
