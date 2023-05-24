@@ -4,7 +4,7 @@ export const modifyTableData = ({ data }: any) => {
   }
 
   return data.map((record: any) => {
-    return { ...record, isCompleted: record.isCompleted.toString() };
+    return { ...record, isCompleted: record.isCompleted.toString(), isImportant: record.isImportant.toString() };
   });
 };
 
@@ -14,6 +14,11 @@ export const convertTableData = ({ data }: any) => {
   }
 
   return data.map((record: any) => {
-    return { ...record, isCompleted: record.isCompleted === 'true', timesSolved: +record.timesSolved };
+    return {
+      ...record,
+      isCompleted: record.isCompleted === 'true',
+      timesSolved: +record.timesSolved,
+      isImportant: record.isImportant === 'true',
+    };
   });
 };
