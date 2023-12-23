@@ -5,3 +5,6 @@ export const Save_PROBLEM_REQUEST = 'Save_PROBLEM_REQUEST';
 export const Save_PROBLEM_SUCCESS = 'Save_PROBLEM_SUCCESS';
 export const Save_PROBLEM_FAIL = 'Save_PROBLEM_FAIL';
 export const Reset_PROBLEM_Service_Message = 'Reset_PROBLEM_Service_Message';
+export const Get_COLLECTIONS_REQUEST = 'Get_COLLECTIONS_REQUEST';
+export const Get_COLLECTIONS_SUCCESS = 'Get_COLLECTIONS_SUCCESS';
+export const Get_COLLECTIONS_FAIL = 'Get_COLLECTIONS_FAIL';

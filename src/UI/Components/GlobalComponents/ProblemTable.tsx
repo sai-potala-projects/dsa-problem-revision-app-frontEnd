@@ -57,20 +57,22 @@ interface NewRow {
   timesSolved?: string;
   isImportant?: string;
   url?: string;
+  collectionName: string;
 }
 
 interface ProblemTableProps {
   tableData: any;
   tableDifficultyLevel: string;
+  collectionName: string;
 }
 
 const StyledTableCell = (props: JSX.IntrinsicAttributes & TableCellProps) => (
   <TableCell sx={{ padding: '8px' }} {...props} />
 );
 
-const ProblemTable = ({ tableData, tableDifficultyLevel }: ProblemTableProps) => {
+const ProblemTable = ({ tableData, tableDifficultyLevel, collectionName }: ProblemTableProps) => {
   const ROWS_PER_PAGE = 5;
-  const initialNewRow: NewRow = { difficultyLevel: tableDifficultyLevel };
+  const initialNewRow: NewRow = { difficultyLevel: tableDifficultyLevel, collectionName };
   const dispatch = useDispatch();
 
   const problemListData = useSelector((state: any) => state.problemServiceData);
@@ -96,6 +98,10 @@ const ProblemTable = ({ tableData, tableDifficultyLevel }: ProblemTableProps) =>
       setData(tableData);
     }
   }, [tableData]);
+
+  useEffect(() => {
+    setNewRow({ ...initialNewRow, collectionName });
+  }, [collectionName]);
 
   const handleRowClick = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const { checked } = event.target;
@@ -140,7 +146,12 @@ const ProblemTable = ({ tableData, tableDifficultyLevel }: ProblemTableProps) =>
       return deleteProblem._id;
     });
     setDeleteConfirmationOpen(false);
-    dispatch(problemServiceCall({ requestBody: { problemIds: toBeDeletedData }, url: '/problems/delete' }) as any);
+    dispatch(
+      problemServiceCall({
+        requestBody: { problemIds: toBeDeletedData, collectionName },
+        url: '/problems/delete',
+      }) as any
+    );
   };
 
   const handleSave = async () => {
@@ -152,7 +163,9 @@ const ProblemTable = ({ tableData, tableDifficultyLevel }: ProblemTableProps) =>
     });
     const convertedData = convertTableData({ data: savedData });
     setSaveConfirmationOpen(false);
-    dispatch(problemServiceCall({ requestBody: { problems: convertedData }, url: '/problems/add' }) as any);
+    dispatch(
+      problemServiceCall({ requestBody: { problems: convertedData, collectionName }, url: '/problems/add' }) as any
+    );
   };
 
   const handleCancel = () => {
@@ -188,7 +201,7 @@ const ProblemTable = ({ tableData, tableDifficultyLevel }: ProblemTableProps) =>
     const newPage = Math.floor(newRowIndex / ROWS_PER_PAGE);
 
     setData(updatedData);
-    setNewRow({});
+    setNewRow({ collectionName });
     setSelectedRows([...selectedRows, newRowIndex]); // Preselect the newly added row
     setPage(newPage);
     setDeleteButtonDisabled(true); // Disable delete button when a new row is added
@@ -386,7 +399,6 @@ const ProblemTable = ({ tableData, tableDifficultyLevel }: ProblemTableProps) =>
                     value={newRow['difficultyLevel'] || ''}
                     label="Difficulty Level"
                     onChange={(event) => {
-                      console.log('event.target.value :', event.target.value);
                       setNewRow({ ...newRow, difficultyLevel: event.target.value });
                     }}
                   >
@@ -415,7 +427,6 @@ const ProblemTable = ({ tableData, tableDifficultyLevel }: ProblemTableProps) =>
                     value={newRow['isCompleted'] || ''}
                     label="Mark as completed"
                     onChange={(event) => {
-                      console.log('event.target.value :', event.target.value);
                       setNewRow({ ...newRow, isCompleted: event.target.value });
                     }}
                   >

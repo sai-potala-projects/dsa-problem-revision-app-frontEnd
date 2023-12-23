@@ -1,5 +1,8 @@
 import { problemServiceDataInitialState } from '../../store';
 import {
+  Get_COLLECTIONS_FAIL,
+  Get_COLLECTIONS_REQUEST,
+  Get_COLLECTIONS_SUCCESS,
   Get_PROBLEM_FAIL,
   Get_PROBLEM_REQUEST,
   Get_PROBLEM_SUCCESS,
@@ -11,10 +14,16 @@ import {
 
 export const getProblemListReducer = (state = { ...problemServiceDataInitialState }, action: any) => {
   switch (action.type) {
+    case Get_COLLECTIONS_REQUEST:
+      return { ...state, loading: true };
+    case Get_COLLECTIONS_SUCCESS:
+      return { ...state, loading: false,collections:action.payload.collections };
+    case Get_COLLECTIONS_FAIL:
+        return { ...state, loading: false,error: action.payload };
     case Get_PROBLEM_REQUEST:
       return { ...state, loading: true };
     case Get_PROBLEM_SUCCESS:
-      return { ...state, loading: false, problemData: action.payload.problemList };
+      return { ...state, loading: false, problemData: action.payload.problemList,collections:action.payload.collections };
     case Get_PROBLEM_FAIL:
       return { ...state, loading: false, error: action.payload };
     case Save_PROBLEM_REQUEST:
@@ -28,6 +37,7 @@ export const getProblemListReducer = (state = { ...problemServiceDataInitialStat
         saveLoading: false,
         problemData: action.payload.problemList,
         saveSuccess: 'Selected rows Saved successfully',
+        collections:action.payload.collections
       };
     case Save_PROBLEM_FAIL:
       return {
